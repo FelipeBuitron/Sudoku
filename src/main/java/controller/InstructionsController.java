@@ -13,42 +13,52 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
-public class StartController {
+public class InstructionsController {
 
     @FXML
     private Label titulo;
 
     @FXML
-    private Button NuevoJuego;
+    private Label subtitulo;
 
     @FXML
-    private Button instrucciones;
+    private Label texto;
+
+    @FXML
+    private Button botonVolver;
+
+
     public void initialize(){
 
-        Font gilroyinstrucciones = Font.loadFont(
+        Font gilroy = Font.loadFont(
                 getClass().getResourceAsStream("/fonts/gilroy.TTF"),
-                18
+                20
         );
 
-        Font gilroyBoldNuevoJuego = Font.loadFont(
+        Font gilroyBold = Font.loadFont(
                 getClass().getResourceAsStream("/fonts/gilroyblod.TTF"),
-                18
+                20
         );
 
         Font rog = Font.loadFont(
                 getClass().getResourceAsStream("/fonts/rog.otf"),
                 60
         );
+        Font gilroyBoton = Font.loadFont(
+                getClass().getResourceAsStream("/fonts/rog.otf"),
+                20
+        );
 
         titulo.setFont(rog);
-        NuevoJuego.setFont(gilroyBoldNuevoJuego);
-        instrucciones.setFont(gilroyinstrucciones);
+        subtitulo.setFont(gilroy);
+        texto.setFont(gilroy);
+        botonVolver.setFont(gilroyBoton);
 
     }
-    public void starNewGame(ActionEvent event) throws IOException {
+    public void goBack(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/view/GameView.fxml")
+                getClass().getResource("/view/StartView.fxml")
         );
         Parent root = loader.load();
 
@@ -60,22 +70,7 @@ public class StartController {
 
         stage.setScene(scene);
         stage.show();
-    }
-    public void instructions (ActionEvent event) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/view/instructions.fxml")
-        );
-        Parent root = loader.load();
-
-        Scene scene =new Scene(root);
-
-        Stage stage=(Stage)((Node) event.getSource())
-                .getScene()
-                .getWindow();
-
-        stage.setScene(scene);
-        stage.show();
     }
 }
 
