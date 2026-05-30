@@ -1,0 +1,48 @@
+.subtitulo {
+    -fx-font-family: "ROG Fonts";
+    -fx-font-size: 16px;
+    -fx-text-fill: black;
+}
+
+.textoNegrillaUno {
+    -fx-font-family: "GILROYBLOD.TTF Fonts";
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.textoNegrillaDos {
+    -fx-font-family: "GILROYBLOD.TTF Fonts";
+    -fx-font-size: 16px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.texto {
+    -fx-font-family: "GILROY.TTF Fonts";
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+;
+}
+
+.titulo {
+    -fx-font-family: "ROG Fonts";
+    -fx-font-size: 46px;
+    -fx-text-fill: black;
+}
+
+.botonJuego {
+    -fx-font-family: "ROG Fonts";
+    -fx-font-size: 12px;
+    -fx-text-fill: black;
+}
+
+.cronometro {
+    -fx-font-family: "ROG Fonts";
+    -fx-font-size: 24px;
+    -fx-text-fill: black;
+}
+.root {
+    -fx-background-image: url("/img/background.png");
+    -fx-background-size: cover;
+}
