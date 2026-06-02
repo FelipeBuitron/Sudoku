@@ -3,27 +3,26 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-
-
-
-import java.util.ArrayList;
+import model.SudokuModel; // Importamos el modelo que acabamos de crear
 
 public class JuegoController {
 
     @FXML private GridPane tableroSudoku;
 
-    private ArrayList<ArrayList<TextField>> tablero;
+    // Cambiamos ArrayList por una matriz primitiva estándar
+    private TextField[][] celdas;
+    private SudokuModel modelo;
 
     public void initialize() {
 
-        // TABLERO
+        // Inicializamos la matriz visual de 6x6 y creamos el modelo
+        celdas = new TextField[6][6];
+        modelo = new SudokuModel();
 
-        tablero = new ArrayList<>();
+        // Le pedimos al modelo el tablero con los números revelados
+        int[][] tableroInicial = modelo.getTableroInicial();
 
         for (int fila = 0; fila < 6; fila++) {
-
-            ArrayList<TextField> filaActual = new ArrayList<>();
-
             for (int columna = 0; columna < 6; columna++) {
 
                 TextField celda = new TextField();
@@ -31,33 +30,32 @@ public class JuegoController {
                 celda.setPrefSize(60, 60);
                 celda.setMaxSize(60, 60);
 
-                celda.setStyle(
-                        "-fx-alignment: center;" +
-                                "-fx-font-size:50px;" +
-                                "-fx-border-color: black;" +
-                                "-fx-border-width: 1;"
-                );
-
                 int bloqueFila = fila / 2;
                 int bloqueColumna = columna / 3;
+
                 String baseStyle =
                         "-fx-font-size: 18px;" +
                                 "-fx-alignment: center;" +
                                 "-fx-border-color: black;" +
                                 "-fx-border-width: 1;";
 
+                // Coloreamos los bloques
                 if ((bloqueFila + bloqueColumna) % 2 == 0) {
                     celda.setStyle(baseStyle + "-fx-background-color: #E0E0E0;");
-
                 } else {
                     celda.setStyle(baseStyle + "-fx-background-color: white;");
                 }
 
-                tableroSudoku.add(celda, columna, fila);
-                filaActual.add(celda);
-            }
+                // NUEVO: Verificamos si esta celda debe mostrar un número inicial
+                if (tableroInicial[fila][columna] != 0) {
+                    celda.setText(String.valueOf(tableroInicial[fila][columna]));
+                    celda.setEditable(false); // Bloqueamos la celda para que no la modifiquen
+                    celda.setStyle(celda.getStyle() + "-fx-font-weight: bold;"); // Lo ponemos en negrita
+                }
 
-            tablero.add(filaActual);
+                tableroSudoku.add(celda, columna, fila);
+                celdas[fila][columna] = celda; // Guardamos el TextField en nuestra matriz
+            }
         }
     }
 }
