@@ -60,4 +60,14 @@ public class SudokuModel {
     public int[][] getTableroResuelto() {
         return tableroResuelto;
     }
+
+    // Este método devuelve 'true' si el número coincide con la solución, o 'false' si no coincide
+    public boolean verificarNumero(int fila, int col, int numero) {
+        // Compara directamente con nuestra matriz resuelta
+        if (tableroResuelto[fila][col] == numero) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
