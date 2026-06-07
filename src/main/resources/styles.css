@@ -46,3 +46,8 @@
     -fx-background-image: url("/img/background.png");
     -fx-background-size: cover;
 }
+
+.text-field {
+    -fx-font-size: 51px;
+    -fx-alignment: center;
+}

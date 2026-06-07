@@ -1,16 +1,29 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import model.SudokuModel;
+import javafx.scene.control.Label;
+
+import java.io.IOException;
+import java.util.Random;
 
 public class JuegoController {
 
     @FXML private GridPane tableroSudoku;
+    @FXML private Label lblAyudas;
 
     private TextField[][] celdas;
     private SudokuModel modelo;
+    private TextField celdaSeleccionada;
+    private int ayudasRestantes = 5;
 
     public void initialize() {
         celdas = new TextField[6][6];
@@ -37,6 +50,13 @@ public class JuegoController {
                     // SI LA CELDA ES EDITABLE, creamos las variables constantes para el Listener
                     final int f = fila;
                     final int c = columna;
+
+                    // Guarda la celda actualmente seleccionada
+                    celda.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                        if (newVal) {
+                            celdaSeleccionada = celda;
+                        }
+                    });
 
                     // HU-4: Validación en tiempo real al cambiar el texto
                     celda.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -68,6 +88,7 @@ public class JuegoController {
                 celdas[fila][columna] = celda;
             }
         }
+        lblAyudas.setText("" + ayudasRestantes);
     }
 
     // Método auxiliar para el estilo normal (Bordes negros de 1px)
@@ -94,5 +115,110 @@ public class JuegoController {
         } else {
             celda.setStyle(estiloError + "-fx-background-color: white;");
         }
+    }
+    @FXML
+    private void borrarCelda() {
+        if (celdaSeleccionada != null) {
+            celdaSeleccionada.clear();
+        }
+    }
+    @FXML
+    private void nuevoJuego() {
+
+        modelo = new SudokuModel();
+
+        int[][] tableroInicial = modelo.getTableroInicial();
+
+        ayudasRestantes = 5;
+        lblAyudas.setText("" + ayudasRestantes);
+
+        for (int fila = 0; fila < 6; fila++) {
+            for (int columna = 0; columna < 6; columna++) {
+
+                establecerEstiloBase(
+                        celdas[fila][columna],
+                        fila,
+                        columna);
+
+                if (tableroInicial[fila][columna] != 0) {
+
+                    celdas[fila][columna].setText(
+                            String.valueOf(tableroInicial[fila][columna])
+                    );
+
+                    celdas[fila][columna].setEditable(false);
+
+                    celdas[fila][columna].setStyle(
+                            celdas[fila][columna].getStyle() +
+                                    "-fx-font-weight: bold;"
+                    );
+
+                } else {
+
+                    celdas[fila][columna].setText("");
+
+                    celdas[fila][columna].setEditable(true);
+                }
+
+            }
+        }
+
+        celdaSeleccionada = null;
+    }
+    @FXML
+    private void usarAyuda() {
+
+
+        if (ayudasRestantes <= 0) {
+            return;
+        }
+
+        Random random = new Random();
+
+        int fila;
+        int columna;
+
+        do {
+            fila = random.nextInt(6);
+            columna = random.nextInt(6);
+
+        } while (!celdas[fila][columna].getText().isEmpty()
+            || !celdas[fila][columna].getPromptText().isEmpty());
+
+        int sugerencia =
+                modelo.getTableroResuelto()[fila][columna];
+
+        celdas[fila][columna].setPromptText(
+                String.valueOf(sugerencia)
+        );
+        ayudasRestantes--;
+
+        lblAyudas.setText(
+                "" + ayudasRestantes
+        );
+    }
+    public void BotonRegresar(ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/view/InicioView.fxml")
+        );
+
+        Parent root = loader.load();
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        double width = stage.getWidth();
+        double height = stage.getHeight();
+
+        Scene scene = new Scene(root);
+
+        stage.setScene(scene);
+
+        stage.setWidth(width);
+        stage.setHeight(height);
+
+        stage.show();
     }
 }

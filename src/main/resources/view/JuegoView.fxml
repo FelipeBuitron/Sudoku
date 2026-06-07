@@ -17,17 +17,17 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="101.0" prefWidth="600.0" spacing="80.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <Button fx:id="botones" styleClass="botonJuego" mnemonicParsing="false" prefHeight="33.0" prefWidth="100.0" text="AYUDA">
+            <Button fx:id="botones" mnemonicParsing="false" onAction="#usarAyuda" prefHeight="33.0" prefWidth="100.0" styleClass="botonJuego" text="AYUDA">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" styleClass="botonJuego" prefHeight="33.0" prefWidth="100.0" text="BORRAR">
+            <Button onAction="#borrarCelda" prefHeight="33.0" prefWidth="100.0" styleClass="botonJuego" text="BORRAR">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button alignment="CENTER" styleClass="botonJuego" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="100.0" text="REINICIAR" textAlignment="CENTER">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#nuevoJuego" prefHeight="33.0" prefWidth="150.0" styleClass="botonJuego" text="NUEVO JUEGO" textAlignment="CENTER">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -36,8 +36,10 @@
       </HBox>
    </bottom>
    <left>
-      <VBox alignment="CENTER" prefHeight="233.0" prefWidth="158.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="233.0" prefWidth="158.0" BorderPane.alignment="CENTER">
          <children>
+            <Button onAction="#BotonRegresar" alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="136.0" styleClass="botonJuego" text="◄ Regresar">
+            </Button>
             <Label fx:id="subtitulos" alignment="BOTTOM_CENTER" prefHeight="84.0" prefWidth="158.0" styleClass="subtitulo" text="TE QUEDAN " textAlignment="CENTER">
                <font>
                   <Font name="ROGFonts-Regular" size="16.0" />
@@ -46,7 +48,7 @@
                   <Insets top="50.0" />
                </opaqueInsets>
             </Label>
-            <Label alignment="CENTER" prefHeight="74.0" prefWidth="76.0" text="5">
+            <Label fx:id="lblAyudas" alignment="CENTER" prefHeight="74.0" prefWidth="76.0" text="5">
                <font>
                   <Font size="51.0" />
                </font>
