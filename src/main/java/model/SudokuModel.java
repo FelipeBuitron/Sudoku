@@ -2,7 +2,7 @@ package model;
 
 import java.util.Random;
 
-public class SudokuModel {
+public class SudokuModel implements SudokuValidador {
 
     // 1. Aquí guardamos la matriz con la solución exacta de tu imagen (el 6 amarillo incluido)
     private final int[][] tableroResuelto = {
@@ -62,6 +62,7 @@ public class SudokuModel {
     }
 
     // Este método devuelve 'true' si el número coincide con la solución, o 'false' si no coincide
+    @Override
     public boolean verificarNumero(int fila, int col, int numero) {
         // Compara directamente con nuestra matriz resuelta
         if (tableroResuelto[fila][col] == numero) {

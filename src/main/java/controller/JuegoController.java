@@ -6,11 +6,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SudokuModel;
 import javafx.scene.control.Label;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Random;
@@ -19,11 +23,16 @@ public class JuegoController {
 
     @FXML private GridPane tableroSudoku;
     @FXML private Label lblAyudas;
+    @FXML private Label lblTiempo;
 
+    private Timeline temporizador;
+    private int segundos = 0;
     private TextField[][] celdas;
     private SudokuModel modelo;
     private TextField celdaSeleccionada;
     private int ayudasRestantes = 5;
+    private boolean yaGano = false;
+    private VictoriaListener listener = new VictoriaListener();
 
     public void initialize() {
         celdas = new TextField[6][6];
@@ -77,9 +86,12 @@ public class JuegoController {
 
                         // 3. HU-4: Comprobación con el modelo y feedback visual (Borde Rojo)
                         if (modelo.verificarNumero(f, c, numIngresado)) {
-                            establecerEstiloBase(celda, f, c); // Corrección o acierto: vuelve al estilo normal
+                            establecerEstiloBase(celda, f, c);
                         } else {
-                            ponerBordeRojo(celda, f, c); // Error: se resalta en rojo
+                            ponerBordeRojo(celda, f, c);
+                        }
+                        if (!newValue.isEmpty()) {
+                            verificarVictoria();
                         }
                     });
                 }
@@ -89,6 +101,7 @@ public class JuegoController {
             }
         }
         lblAyudas.setText("" + ayudasRestantes);
+        iniciarTemporizador();
     }
 
     // Método auxiliar para el estilo normal (Bordes negros de 1px)
@@ -162,8 +175,13 @@ public class JuegoController {
 
             }
         }
+        segundos = 0;
+
+        lblTiempo.setText("00:00");
 
         celdaSeleccionada = null;
+
+        yaGano = false;
     }
     @FXML
     private void usarAyuda() {
@@ -188,9 +206,14 @@ public class JuegoController {
         int sugerencia =
                 modelo.getTableroResuelto()[fila][columna];
 
-        celdas[fila][columna].setPromptText(
+        celdas[fila][columna].setText(
                 String.valueOf(sugerencia)
         );
+        celdas[fila][columna].setStyle(
+                celdas[fila][columna].getStyle()
+                        + "-fx-text-fill: #1E88E5;"
+        );
+
         ayudasRestantes--;
 
         lblAyudas.setText(
@@ -221,4 +244,80 @@ public class JuegoController {
 
         stage.show();
     }
+    private void iniciarTemporizador() {
+
+        temporizador = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+
+                    segundos++;
+
+                    int minutos = segundos / 60;
+                    int seg = segundos % 60;
+
+                    lblTiempo.setText(
+                            String.format("%02d:%02d", minutos, seg)
+                    );
+                })
+        );
+
+        temporizador.setCycleCount(Timeline.INDEFINITE);
+
+        temporizador.play();
+    }
+
+    private boolean sudokuCompletado() {
+
+        for (int fila = 0; fila < 6; fila++) {
+            for (int columna = 0; columna < 6; columna++) {
+
+                String texto = celdas[fila][columna].getText();
+
+                if (texto.isEmpty()) {
+                    return false;
+                }
+
+                int numero = Integer.parseInt(texto);
+
+                if (!modelo.verificarNumero(fila, columna, numero)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private void verificarVictoria() {
+        boolean completo = sudokuCompletado();
+
+        if (!yaGano && sudokuCompletado()) {
+            yaGano = true;
+            listener.onVictoria();
+        }
+    }
+
+    private void mostrarVictoria() {
+
+        temporizador.stop();
+
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+
+        alerta.setTitle("¡Felicidades!");
+        alerta.setHeaderText("Sudoku completado");
+
+        alerta.setContentText(
+                "Has completado el Sudoku en "
+                        + lblTiempo.getText()
+        );
+
+        alerta.showAndWait();
+    }
+    private class VictoriaListener extends JuegoAdapter {
+
+        @Override
+        public void onVictoria() {
+            mostrarVictoria();
+        }
+    }
+
 }

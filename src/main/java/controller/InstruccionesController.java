@@ -12,11 +12,6 @@ import java.io.IOException;
 
 public class InstruccionesController {
 
-
-    public void initialize(){
-
-
-    }
     public void BotonRegresar(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(

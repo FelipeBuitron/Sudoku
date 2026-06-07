@@ -38,7 +38,7 @@
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="233.0" prefWidth="158.0" BorderPane.alignment="CENTER">
          <children>
-            <Button onAction="#BotonRegresar" alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="136.0" styleClass="botonJuego" text="◄ Regresar">
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#BotonRegresar" prefHeight="35.0" prefWidth="136.0" styleClass="botonJuego" text="◄ Regresar">
             </Button>
             <Label fx:id="subtitulos" alignment="BOTTOM_CENTER" prefHeight="84.0" prefWidth="158.0" styleClass="subtitulo" text="TE QUEDAN " textAlignment="CENTER">
                <font>

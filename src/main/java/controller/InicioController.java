@@ -12,10 +12,6 @@ import java.io.IOException;
 
 public class InicioController {
 
-
-    public void initialize(){
-
-    }
     public void BotonIniciarJuego(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(
